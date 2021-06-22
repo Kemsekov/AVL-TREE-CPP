@@ -34,6 +34,6 @@ void test1(AvlTree<int>* tree){
         if(abs(node->get_balance_factor())>1)
             throw runtime_error("Wrong shit "
                                 + to_string(node->Data())
-                                + "have bad balance factor!");
+                                + " have bad balance factor!");
     }));
 }

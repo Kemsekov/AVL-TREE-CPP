@@ -7,49 +7,25 @@ AvlTree<TData,_Compare>::AvlTree(_AvlTree && t){
     this->_right = t._right;
     this->data = t.data;
 }
-template<typename TData,typename _Compare>
-AvlTree<TData,_Compare> AvlTree<TData,_Compare>::operator=(const AvlTree<int>& t){
-    this->_left = t._left;
-    this->_right = t._right;
-    this->data = t.data;
-}
+
 template<typename TData,typename _Compare>
 AvlTree<TData,_Compare>::AvlTree(TData && data)
 {
     this->data = data;
 }
 
-template<typename TData,typename _Compare>
-void AvlTree<TData,_Compare>::add_node(_AvlTree* node){
-    if(node->data<this->data){
-        if(this->_left==nullptr)
-        {
-            this->_left = node;
-            return;
-        }
-        this->_left->add_node(node);
-    }
-    else{
-        if(this->_right==nullptr)
-        { 
-            this->_right = node;
-            return;
-        }
-        this->_right->add_node(node);
-    }
-}
 
 template<typename TData,typename _Compare>
-void AvlTree<TData,_Compare>::add(TData* data, three_circular_buffer* buf) 
+void AvlTree<TData,_Compare>::add(TData* data) 
 {   
-    if(*data<this->data)
+    if(_Compare()(*data,this->data))
         if(_left!=nullptr)
-            _left->add(data,buf);
+            _left->add(data);
         else
             _left = new AvlTree{std::move(*data)};
     else
         if(_right!=nullptr)
-            _right->add(data,buf);
+            _right->add(data);
         else
             _right = new AvlTree{std::move(*data)};
     this->balance();
@@ -58,8 +34,7 @@ void AvlTree<TData,_Compare>::add(TData* data, three_circular_buffer* buf)
 template<typename TData,typename _Compare>
 void AvlTree<TData,_Compare>::Add(TData && data) 
 {
-    three_circular_buffer buf{};
-    this->add(&data,&buf);
+    this->add(&data);
 }
 
 template<typename TData,typename _Compare>
